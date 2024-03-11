@@ -1,7 +1,6 @@
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { style } from "../../styles/style";
-import React, { FC, useRef } from "react";
-import { BsBack, BsForward } from "react-icons/bs";
+import React, { FC, useRef, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 type Props = {
@@ -15,6 +14,7 @@ type verifyNumber = {
 };
 
 const VerifyOTP: FC<Props> = ({ setRoute }) => {
+  const [error, setError] = useState(false);
   const [verifyNumber, setVerifyNumber] = React.useState<verifyNumber>({
     0: "",
     1: "",
@@ -32,6 +32,7 @@ const VerifyOTP: FC<Props> = ({ setRoute }) => {
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
+    setError(false);
     const value = e.target.value.slice(0, 1);
     const newVerifyNumber = { ...verifyNumber, [index]: value };
     setVerifyNumber(newVerifyNumber);
@@ -60,13 +61,16 @@ const VerifyOTP: FC<Props> = ({ setRoute }) => {
               ref={inputRefs[index]}
               maxLength={1}
               onChange={(e) => handelInputChange(e, index)}
-              className="w-[50px] h-[50px] ml-2 rounded-md text-center border-2 border-white"
+              className={`${
+                error && "shake !border-red-700"
+              } w-[50px] h-[50px] ml-2 rounded-md text-center border-2 border-white`}
             />
           ))}
         </div>
         <div className="flex justify-center items-center mt-7">
           <button
             type="button"
+            onClick={() => setError(true)}
             className="text-white border-white bg-gray-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
           >
             Verify OTP

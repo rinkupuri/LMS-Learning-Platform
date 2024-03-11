@@ -57,6 +57,35 @@ body {
   }
 }
 
+/* shake animation for OTP field  */
+.shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  8%,
+  35% {
+    transform: translateX(-5px);
+  }
+  25%,
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  70% {
+    transform: translateX(2px);
+  }
+  90% {
+    transform: translateX(-2px);
+  }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
