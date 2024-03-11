@@ -20,6 +20,13 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
+::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
 .hero_animation {
   background-image: linear-gradient(
     147.92deg,

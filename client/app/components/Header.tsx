@@ -7,6 +7,11 @@ import {
   HiOutlineUser,
   HiOutlineUserCircle,
 } from "react-icons/hi";
+import ModelComponent from "../components/ModelComponent";
+import Login from "../components/Login";
+import SignIn from "./SignIn";
+import VerifyOTP from "./Auth/VerifyOTP";
+import { style } from "../styles/style";
 
 type Props = {
   open: boolean;
@@ -17,6 +22,8 @@ type Props = {
 const Header: FC<Props> = (props) => {
   const [active, setActive] = useState(0);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [route, setRoute] = useState("");
   return (
     <div className={`w-full h-[80px] bg-no-repeat `}>
       <div
@@ -27,7 +34,7 @@ const Header: FC<Props> = (props) => {
         }`}
       >
         <div className="w-11/12 font-[500] text-black dark:text-white flex justify-between items-center">
-          <Link href={"/"} className="text-[20px] font-[500]">
+          <Link href={"/"} className={`text-[20px] font-[500] ${style.title}`}>
             RP Dev
           </Link>
           <Navbar activeItem={props.activeItem} isMobile={false} />
@@ -40,41 +47,80 @@ const Header: FC<Props> = (props) => {
                 className="text-[30px] text-black dark:text-white cursor-pointer"
               />
             </div>
-            <HiOutlineUserCircle className="text-[30px] 800px:block hidden text-black dark:text-white cursor-pointer" />
+            <HiOutlineUserCircle
+              onClick={() => {
+                setOpen(true);
+                setRoute("Login");
+              }}
+              className="text-[30px] 800px:block hidden text-black dark:text-white cursor-pointer"
+            />
           </div>
-          {/* Drawer Menu  */}
-          {openDrawer && (
-            <div
-              className="fixed top-0  left-0 w-full h-screen bg-[#00000024] z-[100]"
-              id="screen"
-              onClick={() => setOpenDrawer(false)}
-            >
-              <div className="fixed top-0 right-0 w-[73%] bg-white dark:bg-slate-900 h-full dark:bg-opacity-90 z-50">
-                <Link
-                  href={"/"}
-                  className="text-[20px] py-8 flex items-center mt-4 justify-center font-[500]"
-                >
-                  RP Dev
-                </Link>
-                <div className="flex w-full justify-start items-start px-8 flex-col">
-                  <Navbar activeItem={props.activeItem} isMobile={true} />
-                </div>
-                <br />
-                <br />
-                <div className="flex w-full justify-start items-center px-8">
-                  <HiOutlineUserCircle
-                    size={30}
-                    className="text-black dark:text-white cursor-pointer"
-                  />
-                </div>
-                <div className="flex text-[16px] p-8 text-black dark:text-white">
-                  Copyrighted @2024 Rinku
-                </div>
-              </div>
-            </div>
-          )}
         </div>
+        {route === "Login" && (
+          <ModelComponent
+            Component={Login}
+            setRoute={setRoute}
+            open={open}
+            setOpen={setOpen}
+          />
+        )}
+        {route === "SignIn" && (
+          <ModelComponent
+            Component={SignIn}
+            setRoute={setRoute}
+            open={open}
+            setOpen={setOpen}
+          />
+        )}
+        {route === "verify" && (
+          <ModelComponent
+            Component={VerifyOTP}
+            setRoute={setRoute}
+            open={open}
+            setOpen={setOpen}
+          />
+        )}
       </div>
+      {/* Drawer Menu  */}
+      {openDrawer && (
+        <div
+          className="fixed top-0  left-0 w-full h-screen dark:bg-[unset] bg-[#00000024] z-[9999999]"
+          id="screen"
+          onClick={() => setOpenDrawer(false)}
+        >
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            className="absolute  top-0 right-0 w-[73%] bg-white bg-opacity-100 dark:bg-slate-900 h-full dark:bg-opacity-90 z-[99999999999] "
+          >
+            <Link
+              href={"/"}
+              className={`text-[20px]  py-8 flex items-center mt-4 justify-center font-[500] !text-black dark:!text-white ${style.title}`}
+            >
+              RP Dev
+            </Link>
+            <div className="flex  w-full justify-start items-start px-8 flex-col">
+              <Navbar activeItem={props.activeItem} isMobile={true} />
+            </div>
+            <br />
+            <br />
+            <div className="flex w-full justify-start items-center px-8">
+              <HiOutlineUserCircle
+                onClick={() => {
+                  setOpen(true);
+                  setRoute("Login");
+                }}
+                size={30}
+                className="text-black dark:text-white cursor-pointer"
+              />
+            </div>
+            <div className="flex text-[16px] p-8 text-black dark:text-white">
+              Copyrighted @2024 Rinku
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

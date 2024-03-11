@@ -3,6 +3,7 @@
 import React, { FC, useState } from "react";
 import Head from "./utils/Header";
 import Header from "./components/Header";
+import Hero from "./components/Hero";
 interface props {}
 const Page: FC<props> = (props) => {
   const [open, setOpen] = useState(false);
@@ -15,6 +16,7 @@ const Page: FC<props> = (props) => {
         keywords="learning,coding,MERN Stack,programing,machine Learning"
       />
       <Header open={open} setOpen={setOpen} activeItem={activeItem} />
+      <Hero />
     </div>
   );
 };
