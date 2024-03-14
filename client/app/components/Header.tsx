@@ -12,6 +12,7 @@ import Login from "../components/Login";
 import SignIn from "./SignIn";
 import VerifyOTP from "./Auth/VerifyOTP";
 import { style } from "../styles/style";
+import { useSelector } from "react-redux";
 
 type Props = {
   open: boolean;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const Header: FC<Props> = (props) => {
+  const { user } = useSelector((state: any) => state.auth);
   const [active, setActive] = useState(0);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [open, setOpen] = useState(false);
@@ -38,22 +40,42 @@ const Header: FC<Props> = (props) => {
             RP Dev
           </Link>
           <Navbar activeItem={props.activeItem} isMobile={false} />
-          <div className="flex gap-5 h-full justify-center items-center ">
+          <div className="flex  h-full justify-center items-center ">
             <ThemeSwitcher />
             {/* Only For Mobile  */}
             <div className="800px:hidden">
               <HiOutlineMenuAlt3
                 onClick={() => setOpenDrawer(!openDrawer)}
-                className="text-[30px] text-black dark:text-white cursor-pointer"
+                className="text-[30px] ml-5 text-black dark:text-white cursor-pointer"
               />
             </div>
-            <HiOutlineUserCircle
-              onClick={() => {
-                setOpen(true);
-                setRoute("Login");
-              }}
-              className="text-[30px] 800px:block hidden text-black dark:text-white cursor-pointer"
-            />
+            {!user?.avatar?.url ? (
+              <HiOutlineUserCircle
+                onClick={() => {
+                  setOpen(true);
+                  setRoute("Login");
+                }}
+                className="text-[30px] ml-5 800px:block hidden text-black dark:text-white cursor-pointer"
+              />
+            ) : user?.avatar?.url ? (
+              <Link href={"/profile"}>
+                <img
+                  src={user.avatar.url}
+                  className="object-cover ml-5 rounded-full 800px:block hidden w-[45px] h-[45px]"
+                  alt="Profile Image"
+                />
+              </Link>
+            ) : (
+              <Link href={"/profile"}>
+                <img
+                  src={
+                    "https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?t=st=1710358314~exp=1710361914~hmac=1326ed069883aac900b23adcf37a95cde14a3ce04dbb8a796c85a5f734c6ee7b"
+                  }
+                  className="object-cover ml-5 800px:block hidden rounded-full w-[45px] h-[45px]"
+                  alt="Profile Image"
+                />
+              </Link>
+            )}
           </div>
         </div>
         {route === "Login" && (
@@ -106,14 +128,33 @@ const Header: FC<Props> = (props) => {
             <br />
             <br />
             <div className="flex w-full justify-start items-center px-8">
-              <HiOutlineUserCircle
-                onClick={() => {
-                  setOpen(true);
-                  setRoute("Login");
-                }}
-                size={30}
-                className="text-black dark:text-white cursor-pointer"
-              />
+              {!user ? (
+                <HiOutlineUserCircle
+                  onClick={() => {
+                    setOpen(true);
+                    setRoute("Login");
+                  }}
+                  className="text-[30px] 800px:block hidden text-black dark:text-white cursor-pointer"
+                />
+              ) : user?.avatar?.url ? (
+                <Link href={"/profile"}>
+                  <img
+                    src={user.avatar.url}
+                    className="object-cover rounded-full w-[45px] h-[45px]"
+                    alt="Profile Image"
+                  />
+                </Link>
+              ) : (
+                <Link href={"/profile"}>
+                  <img
+                    src={
+                      "https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?t=st=1710358314~exp=1710361914~hmac=1326ed069883aac900b23adcf37a95cde14a3ce04dbb8a796c85a5f734c6ee7b"
+                    }
+                    className="object-cover rounded-full w-[45px] h-[45px]"
+                    alt="Profile Image"
+                  />
+                </Link>
+              )}
             </div>
             <div className="flex text-[16px] p-8 text-black dark:text-white">
               Copyrighted @2024 Rinku

@@ -1,7 +1,10 @@
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { style } from "../../styles/style";
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useActivationMutation } from "@/redux/features/auth/api";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -15,6 +18,34 @@ type verifyNumber = {
 
 const VerifyOTP: FC<Props> = ({ setRoute }) => {
   const [error, setError] = useState(false);
+  const [activation, { isError, isSuccess, data, error: activationError }] =
+    useActivationMutation();
+  const { token, user } = useSelector((state: any) => state.auth);
+
+  const handelOtpbutton = async () => {
+    const otp = Object.values(verifyNumber).join("");
+    if (otp.length !== 4) {
+      setError(true);
+      return;
+    }
+    await activation({
+      activationToken: token,
+      activationCode: Number.parseInt(otp),
+    });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("User Created Succes");
+      // window.location.reload(); q
+    }
+    if (isError) {
+      const err = activationError as any;
+      toast.error(err?.data.message);
+      // console.log(user);
+    }
+  }, [isError, isSuccess]);
+
   const [verifyNumber, setVerifyNumber] = React.useState<verifyNumber>({
     0: "",
     1: "",
@@ -27,6 +58,10 @@ const VerifyOTP: FC<Props> = ({ setRoute }) => {
     useRef<HTMLInputElement>(),
     useRef<HTMLInputElement>(),
   ];
+
+  // button otp verify handel
+
+  // input data change handel
 
   const handelInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -70,7 +105,7 @@ const VerifyOTP: FC<Props> = ({ setRoute }) => {
         <div className="flex justify-center items-center mt-7">
           <button
             type="button"
-            onClick={() => setError(true)}
+            onClick={handelOtpbutton}
             className="text-white border-white bg-gray-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
           >
             Verify OTP

@@ -1,18 +1,37 @@
 import { useFormik } from "formik";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { style } from "../styles/style";
+import { useRegisterMutation } from "../../redux/features/auth/api";
+import toast from "react-hot-toast";
+import { signIn, useSession } from "next-auth/react";
 
 type Props = {
   setRoute: (route: string) => void;
 };
 
 const SignIn: FC<Props> = ({ setRoute }) => {
+  const [register, { isError, error, isSuccess, data }] = useRegisterMutation();
+  const { data: sessionData } = useSession();
+  // console.log(sessionData);
   const schema = new Yup.ObjectSchema().shape({
     email: Yup.string().email("Invalid email").required("Please enter email"),
     password: Yup.string().required("Please enter password").min(6),
     name: Yup.string().required("Please enter name").min(3),
   });
+
+  useEffect(() => {
+    const err = error as any;
+    const message: string = isError ? err?.data?.message : data?.message;
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess) {
+      toast.success(message);
+      setRoute("verify");
+    }
+    return () => {};
+  }, [isError, isSuccess]);
 
   const formik = useFormik({
     initialValues: {
@@ -21,8 +40,13 @@ const SignIn: FC<Props> = ({ setRoute }) => {
       password: "",
     },
     validationSchema: schema,
-    onSubmit: (values) => {
-      setRoute("verify");
+    onSubmit: async ({ name, email, password }) => {
+      const data = {
+        name,
+        email,
+        password,
+      };
+      await register(data);
     },
   });
 
@@ -108,7 +132,10 @@ const SignIn: FC<Props> = ({ setRoute }) => {
             <div className="flex w-full my-5">
               <div className="flex items-center justify-between 800px:justify-evenly w-full">
                 {/* google Singin Button */}
-                <button className="flex items-center bg-white dark:bg-gray-900 border border-gray-300 rounded-lg shadow-md px-4 py-1.5 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button
+                  onClick={() => signIn("google")}
+                  className="flex items-center bg-white dark:bg-gray-900 border border-gray-300 rounded-lg shadow-md px-4 py-1.5 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
                   <svg
                     className="h-6 w-6 mr-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +194,10 @@ const SignIn: FC<Props> = ({ setRoute }) => {
 
                 {/* Git Hub Sign In Button */}
 
-                <button className="flex items-center bg-white dark:bg-gray-900 text-white border  border-gray-300 rounded-lg shadow-md max-w-xs px-4 py-1.5 text-sm font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button
+                  onClick={() => signIn("github")}
+                  className="flex items-center bg-white dark:bg-gray-900 text-white border  border-gray-300 rounded-lg shadow-md max-w-xs px-4 py-1.5 text-sm font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
                   <svg
                     className="h-6 w-6 mr-2"
                     xmlns="http://www.w3.org/2000/svg"

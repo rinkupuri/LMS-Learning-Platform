@@ -8,8 +8,6 @@ type Props = {
 };
 
 const Navbar: FC<Props> = (props) => {
-  console.log(props);
-
   const navData = [
     { name: "Home", link: "/" },
     { name: "About", link: "/about" },
@@ -20,7 +18,6 @@ const Navbar: FC<Props> = (props) => {
     <>
       <div className="hidden 800px:flex">
         {navData?.map((item, index) => {
-          console.log(index === props.activeItem);
           return (
             <Link
               key={index}

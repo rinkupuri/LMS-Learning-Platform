@@ -157,15 +157,17 @@ export const getUser = asyncErrorWrapper(async (req, res, next) => {
   const user = await redis.get(req.userId);
   if (user) {
     const newUser = JSON.parse(user);
+    const { password, ...others } = newUser;
     res.status(200).json({
       success: true,
-      newUser,
+      user: others,
     });
   } else {
     const userDB = await User.findById(req.userId);
+    const { password, ...others } = userDB;
     res.status(200).json({
       success: true,
-      userDB,
+      user: others,
     });
   }
 });

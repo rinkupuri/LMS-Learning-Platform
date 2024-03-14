@@ -49,7 +49,7 @@ export const sendToken = async (user, statusCode, res) => {
 
   res.status(statusCode).json({
     success: true,
-    others,
+    user: others,
     accessToken,
   });
 };

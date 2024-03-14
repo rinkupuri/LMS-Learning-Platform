@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import { style } from "../styles/style";
 import ModelComponent from "./ModelComponent";
 import SignIn from "./SignIn";
+import { useLoginMutation } from "@/redux/features/auth/api";
+import toast from "react-hot-toast";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -11,6 +13,14 @@ type Props = {
 
 const Login: FC<Props> = ({ setRoute }) => {
   const [signInClick, setSignInClick] = useState(false);
+  const [login, { isError, isSuccess, data, error, isLoading }] =
+    useLoginMutation();
+
+  useEffect(() => {
+    if (isSuccess) toast.success("Login Succes");
+    const errorr = error as any;
+    if (isError) toast.error(errorr?.data?.message);
+  }, [isError, isSuccess]);
   const schema = new Yup.ObjectSchema().shape({
     email: Yup.string().email("Invalid email").required("Please enter email"),
     password: Yup.string().required("Please enter password").min(6),
@@ -22,15 +32,16 @@ const Login: FC<Props> = ({ setRoute }) => {
       password: "",
     },
     validationSchema: schema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: ({ email, password }) => {
+      login({
+        email,
+        password,
+      });
     },
   });
 
   const { errors, touched, handleSubmit, handleChange, values } = formik;
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+
   return (
     <>
       <div className="flex flex-col *:text-white *:dark:text-white">

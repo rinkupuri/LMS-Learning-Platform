@@ -18,7 +18,7 @@ export const ErrorMiddleware = async (err, req, res, next) => {
 
   // Wrong JWT error
   if (err.name === "JsonWebTokenError") {
-    const message = `Json Web Token is invalid, Try again `;
+    const message = `Tocken Expire, Sign In again`;
     err = new ErrorHandler(message, 400);
   }
 
