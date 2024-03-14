@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ThemeSwitcher from "../utils/themeSwitcher";
 import {
@@ -13,6 +13,11 @@ import SignIn from "./SignIn";
 import VerifyOTP from "./Auth/VerifyOTP";
 import { style } from "../styles/style";
 import { useSelector } from "react-redux";
+import { useSession } from "next-auth/react";
+import {
+  useLoadUserQuery,
+  useSocialAuthMutation,
+} from "@/redux/features/api/apislicer";
 
 type Props = {
   open: boolean;
@@ -26,6 +31,7 @@ const Header: FC<Props> = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [open, setOpen] = useState(false);
   const [route, setRoute] = useState("");
+
   return (
     <div className={`w-full h-[80px] bg-no-repeat `}>
       <div
@@ -49,7 +55,7 @@ const Header: FC<Props> = (props) => {
                 className="text-[30px] ml-5 text-black dark:text-white cursor-pointer"
               />
             </div>
-            {!user?.avatar?.url ? (
+            {!user ? (
               <HiOutlineUserCircle
                 onClick={() => {
                   setOpen(true);

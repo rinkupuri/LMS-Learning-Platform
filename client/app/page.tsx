@@ -5,12 +5,10 @@ import Head from "./utils/Header";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import { useSelector } from "react-redux";
-import { useLoadUserQuery } from "@/redux/features/api/apislicer";
 interface props {}
 const Page: FC<props> = (props) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
-  const { user } = useSelector((state: any) => state.auth);
   return (
     <>
       <div>

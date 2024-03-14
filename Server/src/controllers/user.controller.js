@@ -175,6 +175,7 @@ export const getUser = asyncErrorWrapper(async (req, res, next) => {
 // social login with google and facebook
 
 export const socialAuth = asyncErrorWrapper(async (req, res, next) => {
+  console.log(req.body);
   const { name, email, avatar } = req.body;
   const user = await User.findOne({ email });
   if (user) {
