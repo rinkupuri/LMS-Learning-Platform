@@ -20,5 +20,7 @@ const initializeApp = async () => {
     apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
   );
 };
-
 initializeApp();
+setInterval(() => {
+  initializeApp();
+}, 250000);

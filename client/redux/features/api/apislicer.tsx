@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { userLoggedIn } from "../auth/authSlice";
+import { userLogOut, userLoggedIn } from "../auth/authSlice";
 
 export const apiSlice = createApi({
   reducerPath: "api",
@@ -16,6 +16,8 @@ export const apiSlice = createApi({
         withCredentials: true,
       }),
     }),
+
+    // load user Query
     loadUser: builder.query({
       query: () => ({
         url: "users/me",
@@ -37,14 +39,34 @@ export const apiSlice = createApi({
         url: "users/socialauth",
         method: "POST",
         body: { name, email, avatar },
+        credentials: "include" as const,
+        withCredentials: true,
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(userLoggedIn({ user: data.user }));
       },
     }),
+
+    // logout user Query
+    logout: builder.mutation({
+      query: () => ({
+        url: "users/logout",
+        method: "POST",
+        credentials: "include" as const,
+        withCredentials: true,
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled;
+        dispatch(userLogOut());
+      },
+    }),
   }),
 });
 
-export const { useRefreshQuery, useLoadUserQuery, useSocialAuthMutation } =
-  apiSlice;
+export const {
+  useRefreshQuery,
+  useLoadUserQuery,
+  useSocialAuthMutation,
+  useLogoutMutation,
+} = apiSlice;

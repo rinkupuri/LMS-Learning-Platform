@@ -57,6 +57,19 @@ body {
   }
 }
 
+::-webkit-scrollbar-thumb {
+  width: 4px;
+  background-color: rgb(27, 187, 255);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(68, 77, 87, 0.705);
+}
+
 /* shake animation for OTP field  */
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;

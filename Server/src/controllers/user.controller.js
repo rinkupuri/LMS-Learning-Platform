@@ -217,6 +217,14 @@ export const updatePassword = asyncErrorWrapper(async (req, res, next) => {
   const { oldPassword, newPassword } = req.body;
   if (!oldPassword || !newPassword)
     return next(new ErrorHandler("Please provide old and new password", 400));
+  if (newPassword.length < 6)
+    return next(
+      new ErrorHandler("Password must be at least 6 characters", 400)
+    );
+  if (oldPassword === newPassword)
+    return next(
+      new ErrorHandler("Old and new password must be different", 400)
+    );
   const user = await User.findById(req.userId).select("+password");
   if (!user) return next(new ErrorHandler("User Doesn't exists"));
   if (user.password === undefined)
@@ -251,9 +259,11 @@ export const updateProfilePicture = asyncErrorWrapper(
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
       };
+      const newUser = await user.save();
       await redis.set(req.userId, JSON.stringify(user), "EX", 608400);
       res.status(200).json({
         success: true,
+        user: newUser,
         message: "Profile Picture updated successfully",
       });
     } catch (err) {

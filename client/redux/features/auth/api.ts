@@ -76,8 +76,56 @@ const authApi = apiSlice.injectEndpoints({
         } catch (error) {}
       },
     }),
+
+    // update user QueryStatus
+    updateUser: builder.mutation({
+      query: ({ name }) => ({
+        url: "users/update",
+        method: "PUT",
+        body: { name },
+        credentials: "include" as const,
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(userLoggedIn({ user: data.user }));
+        } catch (error) {}
+      },
+    }),
+
+    // update profile Pic
+    updateProfile: builder.mutation({
+      query: ({ avatar }) => ({
+        url: "users/update-profile",
+        method: "PUT",
+        body: { avatar },
+        credentials: "include" as const,
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(userLoggedIn({ user: data.user }));
+        } catch (error) {}
+      },
+    }),
+
+    // change password
+    changePassword: builder.mutation({
+      query: ({ oldPassword, newPassword }) => ({
+        url: "users/update-password",
+        method: "PUT",
+        body: { oldPassword, newPassword },
+        credentials: "include" as const,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useActivationMutation, useLoginMutation } =
-  authApi;
+export const {
+  useRegisterMutation,
+  useActivationMutation,
+  useLoginMutation,
+  useUpdateUserMutation,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
+} = authApi;

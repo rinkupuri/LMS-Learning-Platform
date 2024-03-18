@@ -12,7 +12,7 @@ const Profile = (props: Props) => {
   return (
     <Protected>
       <Header open={open} setOpen={setOpen} activeItem={activeItem} />
-      <ProfileComponent />
+      <ProfileComponent activeItem={activeItem} />
     </Protected>
   );
 };

@@ -2,10 +2,9 @@ import { useFormik } from "formik";
 import React, { FC, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { style } from "../styles/style";
-import ModelComponent from "./ModelComponent";
-import SignIn from "./SignIn";
 import { useLoginMutation } from "@/redux/features/auth/api";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -63,6 +62,9 @@ const Login: FC<Props> = ({ setRoute }) => {
                 onChange={handleChange}
                 className="block w-full focus:outline-none dark:text-white rounded-md border-0 py-1 px-2   text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
               />
+              {errors.email && (
+                <div className="text-red-500 text-[12px]">{errors.email}</div>
+              )}
             </div>
             <div className="flex flex-col mt-2">
               <label htmlFor="email">Password</label>
@@ -75,6 +77,11 @@ const Login: FC<Props> = ({ setRoute }) => {
                 onChange={handleChange}
                 className="block w-full focus:outline-none dark:text-white rounded-md border-0 py-1 px-2   text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
               />
+              {errors.password && (
+                <div className="text-red-500 text-[12px]">
+                  {errors.password}
+                </div>
+              )}
             </div>
             <div className="flex flex-col justify-center items-center mt-4">
               <input
@@ -102,7 +109,13 @@ const Login: FC<Props> = ({ setRoute }) => {
             <div className="flex w-full my-5">
               <div className="flex items-center justify-between 800px:justify-evenly w-full">
                 {/* google Singin Button */}
-                <button className="flex items-center bg-white dark:bg-gray-900 border border-gray-300 rounded-lg shadow-md px-4 py-1.5 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    signIn("google");
+                  }}
+                  className="flex items-center bg-white dark:bg-gray-900 border border-gray-300 rounded-lg shadow-md px-4 py-1.5 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
                   <svg
                     className="h-6 w-6 mr-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +174,13 @@ const Login: FC<Props> = ({ setRoute }) => {
 
                 {/* Git Hub Sign In Button */}
 
-                <button className="flex items-center bg-white border dark:bg-gray-900 dark:text-white border-gray-300 rounded-lg shadow-md max-w-xs px-4 py-1.5 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    signIn("github");
+                  }}
+                  className="flex items-center bg-white border dark:bg-gray-900 dark:text-white border-gray-300 rounded-lg shadow-md max-w-xs px-4 py-1.5 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
                   <svg
                     className="h-6 w-6 mr-2"
                     xmlns="http://www.w3.org/2000/svg"

@@ -2,22 +2,15 @@ import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ThemeSwitcher from "../utils/themeSwitcher";
-import {
-  HiOutlineMenuAlt3,
-  HiOutlineUser,
-  HiOutlineUserCircle,
-} from "react-icons/hi";
+import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import ModelComponent from "../components/ModelComponent";
 import Login from "../components/Login";
 import SignIn from "./SignIn";
 import VerifyOTP from "./Auth/VerifyOTP";
 import { style } from "../styles/style";
+import { logoDark, logoLight } from "./LogoSvg/logo";
 import { useSelector } from "react-redux";
-import { useSession } from "next-auth/react";
-import {
-  useLoadUserQuery,
-  useSocialAuthMutation,
-} from "@/redux/features/api/apislicer";
+import { useTheme } from "next-themes";
 
 type Props = {
   open: boolean;
@@ -26,6 +19,7 @@ type Props = {
 };
 
 const Header: FC<Props> = (props) => {
+  const { theme } = useTheme();
   const { user } = useSelector((state: any) => state.auth);
   const [active, setActive] = useState(0);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -126,7 +120,9 @@ const Header: FC<Props> = (props) => {
               href={"/"}
               className={`text-[20px]  py-8 flex items-center mt-4 justify-center font-[500] !text-black dark:!text-white ${style.title}`}
             >
-              RP Dev
+              <div className="flex w-[120px] h-[120px]">
+                {theme === "light" ? logoLight() : logoDark()}
+              </div>
             </Link>
             <div className="flex  w-full justify-start items-start px-8 flex-col">
               <Navbar activeItem={props.activeItem} isMobile={true} />
@@ -140,7 +136,7 @@ const Header: FC<Props> = (props) => {
                     setOpen(true);
                     setRoute("Login");
                   }}
-                  className="text-[30px] 800px:block hidden text-black dark:text-white cursor-pointer"
+                  className="text-[30px] 800px:hidden block  text-black dark:text-white cursor-pointer"
                 />
               ) : user?.avatar?.url ? (
                 <Link href={"/profile"}>
@@ -153,9 +149,7 @@ const Header: FC<Props> = (props) => {
               ) : (
                 <Link href={"/profile"}>
                   <img
-                    src={
-                      "https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?t=st=1710358314~exp=1710361914~hmac=1326ed069883aac900b23adcf37a95cde14a3ce04dbb8a796c85a5f734c6ee7b"
-                    }
+                    src={require("../../public/user (1).png")}
                     className="object-cover rounded-full w-[45px] h-[45px]"
                     alt="Profile Image"
                   />

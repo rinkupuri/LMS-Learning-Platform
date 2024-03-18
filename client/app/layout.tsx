@@ -9,11 +9,13 @@ import { Providers } from "./Provider";
 import { Toaster } from "react-hot-toast";
 import { SessionProvider, useSession } from "next-auth/react";
 import {
+  apiSlice,
   useLoadUserQuery,
   useSocialAuthMutation,
 } from "@/redux/features/api/apislicer";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { store } from "@/redux/Store";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,19 +53,17 @@ export default function RootLayout({
   );
 }
 const Custom = ({ children }: { children: React.ReactNode }) => {
-  const { isLoading } = useLoadUserQuery({}, { refetchOnFocus: false });
+  const { isLoading } = useLoadUserQuery({});
   const [loading, setLoading] = useState(true);
   const { data } = useSession();
   const [socilaAuth, { isLoading: socialLoading }] = useSocialAuthMutation();
   const { user } = useSelector((state: any) => state.auth);
+  const [login, setLogin] = useState(true);
 
   useEffect(() => {
-    if (user) setLoading(false);
-  }, [user]);
-
-  useEffect(() => {
-    return () => {
-      if (!user) {
+    // return () => {
+    if (!user) {
+      if (!isLoading)
         if (data?.user) {
           socilaAuth({
             email: data?.user?.email,
@@ -72,14 +72,16 @@ const Custom = ({ children }: { children: React.ReactNode }) => {
               url: data?.user?.image,
             },
           }).then(() => {
-            if (!isLoading) if (!socialLoading) setLoading(false);
+            if (!socialLoading) setLoading(false);
           });
         } else {
-          if (!isLoading) if (!socialLoading) setLoading(false);
+          setLoading(false);
         }
-      }
-    };
-  }, [isLoading, socialLoading, data]);
+    } else {
+      user && !isLoading && setLoading(false);
+    }
+    // };
+  }, [data, isLoading, socialLoading]);
   return (
     <>
       {loading ? (
