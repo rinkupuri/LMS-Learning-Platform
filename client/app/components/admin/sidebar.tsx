@@ -36,11 +36,11 @@ const sidebar: FC<Props> = ({
     <>
       <div
         onClick={() => setDrawer(!drawer)}
-        className="flex fixed top-0 bg-[#00000080] left-0 w-full h-screen"
+        className="flex absolute top-0 bg-[#00000080] left-0 w-full h-screen"
       >
         <div
           onClick={(e) => e.stopPropagation()}
-          className="flex w-[300px] flex-col bg-black opacity-100 h-full"
+          className="flex relative w-[300px] z-[50000] flex-col bg-black opacity-100 h-full"
         >
           <div className="flex flex-col w-full h-fit  mt-5 justify-center items-center">
             <Image

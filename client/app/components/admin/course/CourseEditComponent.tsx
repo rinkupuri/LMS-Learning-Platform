@@ -1,18 +1,40 @@
 import { Course } from "../../../interface/AllInterface";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 import CourseInfoCompinent from "./CourseEditComponent/CourseInformation";
 import CourseOptions from "./CourseEditComponent/CourseOptions";
 import CourseContent from "./CourseEditComponent/CourseContent";
 import CoursePreview from "./CourseEditComponent/CoursePreview";
 
-type Props = {
+type prerequisites = { title: string };
+type benefits = { title: string };
+type videoContent = {
+  videoUrl: string;
+  title: string;
+  description: string;
+  videoThumbnail: {
+    public_id: string;
+    url: string;
+  };
+  videoSection: string;
+  videolength: number;
+  videoplayer: string;
+  link: Array<{ title: string; url: string }>;
+};
+
+interface Props {
   componentType: string;
   course: Course;
   setCourse: (course: any) => void;
   editPage: number;
   setEditPage: (editPage: number) => void;
-};
+  benefits: Array<benefits>;
+  setBenefits: (benefits: Array<benefits>) => void;
+  prerequisites: Array<prerequisites>;
+  setPrerequisites: (prerequisites: Array<prerequisites>) => void;
+  videoContent: Array<videoContent>;
+  setVideoContent(videoContent: Array<videoContent>): void;
+}
 
 const CourseEditComponent: FC<Props> = ({
   editPage,
@@ -20,6 +42,12 @@ const CourseEditComponent: FC<Props> = ({
   course,
   setCourse,
   componentType,
+  benefits,
+  setBenefits,
+  prerequisites,
+  setPrerequisites,
+  videoContent,
+  setVideoContent,
 }) => {
   const courseOptions = [
     "Course Information",
@@ -38,8 +66,24 @@ const CourseEditComponent: FC<Props> = ({
             course={course}
           />
         )}
-        {editPage === 1 && <CourseOptions />}
-        {editPage === 2 && <CourseContent />}
+        {editPage === 1 && (
+          <CourseOptions
+            benefits={benefits}
+            setBenefits={setBenefits}
+            prerequisites={prerequisites}
+            setPrerequisites={setPrerequisites}
+            setEditPage={setEditPage}
+            editPage={editPage}
+          />
+        )}
+        {editPage === 2 && (
+          <CourseContent
+            videoContent={videoContent}
+            setVideoContent={setVideoContent}
+            setEditPage={setEditPage}
+            editPage={editPage}
+          />
+        )}
         {editPage === 3 && <CoursePreview />}
       </div>
       <div className="flex-[2] relative w-full h-screen">
