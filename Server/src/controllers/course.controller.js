@@ -6,6 +6,7 @@ import { redis } from "../config/redis.js";
 import User from "../models/User.js";
 import sendMail from "../utilities/sendMail.js";
 import Notification from "../models/Notification.js";
+import axios from "axios";
 
 // create course route
 export const createCourse = asyncErrorWrapper(async (req, res, next) => {
@@ -120,6 +121,23 @@ export const getCustomCourse = asyncErrorWrapper(async (req, res, next) => {
     next(new ErrorHandler(JSON.stringify(error), 500));
   }
 });
+
+// get Course For Admin
+export const getCustomCourseForAdmin = asyncErrorWrapper(
+  async (req, res, next) => {
+    try {
+      const course = await Course.findById(req.params.id);
+      if (!course) return next(new ErrorHandler("Course not found", 404));
+      return res.status(200).json({
+        success: true,
+        message: "get custom course",
+        course,
+      });
+    } catch (error) {
+      next(new ErrorHandler(JSON.stringify(error), 500));
+    }
+  }
+);
 
 // get purchased course
 
@@ -314,6 +332,36 @@ export const deleteCourse = asyncErrorWrapper(async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Course Deleted",
+    });
+  } catch (error) {
+    next(new ErrorHandler(error, 500));
+  }
+});
+
+// create video ciper otp and playerinfo
+export const vidociper = asyncErrorWrapper(async (req, res, next) => {
+  try {
+    const videoId = req.params.id;
+    const responce = await axios.post(
+      `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
+      {
+        // Request body
+      },
+      {
+        headers: {
+          Authorization: `Apisecret ${process.env.VDOCIPERAPI}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          ttl: 300,
+        },
+      }
+    );
+    res.status(200).json({
+      success: true,
+      message: "otp created",
+      otp: responce.data.otp,
+      playbackInfo: responce.data.playbackInfo,
     });
   } catch (error) {
     next(new ErrorHandler(error, 500));

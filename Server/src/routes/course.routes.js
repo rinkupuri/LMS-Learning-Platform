@@ -7,10 +7,12 @@ import {
   getAllCourse,
   getAllCoursesForAdmin,
   getCustomCourse,
+  getCustomCourseForAdmin,
   getPurchasedCourse,
   replyReview,
   updateCourse,
   updateQuestion,
+  vidociper,
 } from "../controllers/course.controller.js";
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
 import { userSpecific } from "../middleware/userSpecific.js";
@@ -42,5 +44,14 @@ router.delete(
   userSpecific("admin"),
   deleteCourse
 );
+
+router.get(
+  "/getacourse/:id",
+  isAuthenticated,
+  userSpecific("admin"),
+  getCustomCourseForAdmin
+);
+
+router.post("/vidociper/:id", vidociper);
 
 export default router;

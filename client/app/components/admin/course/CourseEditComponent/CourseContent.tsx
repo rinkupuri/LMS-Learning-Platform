@@ -19,7 +19,7 @@ type videoContent = {
   videoSection: string;
   videolength: number;
   videoplayer: string;
-  link: Array<{ title: string; url: string }>;
+  links: Array<{ title: string; url: string }>;
 };
 
 type Props = {
@@ -48,7 +48,7 @@ const CourseContent: FC<Props> = ({
   return (
     <>
       <form onSubmit={handelSubmit} className="w-11/12 overflow-y-scroll p-3">
-        {videoContent.map((video, index) => {
+        {...videoContent.map((video, index) => {
           const showSection =
             index === 0 ||
             video.videoSection !== videoContent[index - 1].videoSection;
@@ -194,7 +194,7 @@ const CourseContent: FC<Props> = ({
                     </h1>
 
                     <div className="flex w-11/12 justify-center items-center flex-col">
-                      {video.link.map((link, i) => {
+                      {video?.links.map((link, i) => {
                         return (
                           <>
                             <div className="flex w-full justify-between items-center">
@@ -205,7 +205,7 @@ const CourseContent: FC<Props> = ({
                                     title="Delete"
                                     className="text-[18px] cursor-pointer"
                                     onClick={() => {
-                                      video.link.splice(i, 1);
+                                      video.links.splice(i, 1);
                                       setVideoContent([...videoContent]);
                                     }}
                                   />
@@ -242,8 +242,7 @@ const CourseContent: FC<Props> = ({
                                       className="!py-1 text-[16px] w-[80%] bg-slate-800 ring-1 ring-white px-3 my-2 outline-none border-none text-white"
                                       value={link.title}
                                       onChange={(e) => {
-                                        video.link[index].title =
-                                          e.target.value;
+                                        video.links[i].title = e.target.value;
                                         setVideoContent([...videoContent]);
                                       }}
                                     />
@@ -274,7 +273,7 @@ const CourseContent: FC<Props> = ({
                                           );
                                       }}
                                       onChange={(e) => {
-                                        video.link[index].url = e.target.value;
+                                        video.links[i].url = e.target.value;
                                         setVideoContent([...videoContent]);
                                       }}
                                     />
@@ -287,7 +286,7 @@ const CourseContent: FC<Props> = ({
                       })}
                       <button
                         onClick={() => {
-                          video.link.push({ title: "", url: "" });
+                          video.links.push({ title: "", url: "" });
                           linkCollapse[index].push(false);
                           setLinksCollapse([...linkCollapse]);
                           setVideoContent([...videoContent]);
@@ -312,7 +311,7 @@ const CourseContent: FC<Props> = ({
                 video.title === ""
               )
                 return false;
-              const isEmp = video.link.map((link) => {
+              const isEmp = video.links.map((link) => {
                 if (link.title === "" || link.url === "") return false;
                 return true;
               });
@@ -332,7 +331,7 @@ const CourseContent: FC<Props> = ({
               videoSection: `Untitled ${videoContent.length + 1}`,
               videolength: 0,
               videoplayer: "",
-              link: [{ title: "", url: "" }],
+              links: [{ title: "", url: "" }],
             });
             setLinksCollapse([...linkCollapse, [false]]);
             setIsCollapsed([...isCollapsed, false]);
@@ -360,7 +359,7 @@ const CourseContent: FC<Props> = ({
                     video.title === ""
                   )
                     return false;
-                  const isEmp = video.link.map((link) => {
+                  const isEmp = video.links.map((link) => {
                     if (link.title === "" || link.url === "") return false;
                     return true;
                   });

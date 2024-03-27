@@ -58,16 +58,17 @@ export interface Comment {
 }
 
 export interface CourseData {
-  videoUrl?: string;
-  title?: string;
-  description?: string;
-  videoThumbnail?: Avatar;
-  videoSection?: string;
-  videolength?: number;
-  videoplayer?: string;
-  links?: Link[];
-  suggestion?: string;
+  videoUrl: string;
+  title: string;
+  description: string;
+  videoThumbnail: Avatar;
+  videoSection: string;
+  videolength: number;
+  videoplayer: string;
+  links: Link[];
+  suggestion: string;
   question?: Comment[];
+  _id?: string;
 }
 
 export interface Course {
@@ -85,17 +86,19 @@ export interface Course {
   benefits?: { title: string }[];
   prerequisites?: { title: string }[];
   reviews?: Review[];
-  courseData?: CourseData[];
+  courseData: CourseData[];
   ratings?: number;
   purchased?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  __v?: 0;
+  _id?: string;
 }
 
 // Interface for avatar object in the user schema
 export interface Avatar {
-  public_id?: string;
-  url?: string;
+  public_id: string;
+  url: string;
 }
 
 // Interface for course object in the user schema

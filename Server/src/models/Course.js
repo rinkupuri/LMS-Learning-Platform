@@ -31,7 +31,11 @@ const reviewSchema = mongoose.Schema({
 const linkSchema = mongoose.Schema({
   title: {
     type: String,
-    ur: String,
+    default: "",
+  },
+  url: {
+    type: String,
+    default: "",
   },
 });
 

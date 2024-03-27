@@ -77,8 +77,9 @@ const CourseInformation: FC<Props> = ({
           <label htmlFor="name">Course Name</label>
           <input
             required
-            className={`!py-2 !px-4 text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white`}
+            className={`!py-2 !px-4 text-black bg *:-slate-800 dark:text-white rounded-sm ring-1 ring-white`}
             type="courseName"
+            value={course.name}
             placeholder="Course Name"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCourse({ ...course, name: e.target.value })
@@ -90,6 +91,7 @@ const CourseInformation: FC<Props> = ({
           <textarea
             rows={6}
             cols={10}
+            value={course.description}
             className={`!py-2 h-min !px-4 text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white`}
             placeholder="Course Description"
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -101,6 +103,7 @@ const CourseInformation: FC<Props> = ({
           <label htmlFor="name">Tags</label>
           <input
             required
+            value={course.tags}
             className={`!py-2 !px-4 text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white`}
             type="tags"
             placeholder="Tags"
@@ -114,6 +117,7 @@ const CourseInformation: FC<Props> = ({
           <div className="flex-[1] flex flex-col">
             <label htmlFor="name">Price</label>
             <input
+              value={course.price ? course.price : ""}
               required
               className={`!py-2 !px-4 text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white`}
               type="price"
@@ -126,6 +130,7 @@ const CourseInformation: FC<Props> = ({
           <div className="flex-[1] flex flex-col">
             <label htmlFor="name">Estimated Price</label>
             <input
+              value={course.estimatedprice !== 0 ? course.estimatedprice : ""}
               required
               className={`!py-2 !px-4 text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white`}
               type="estimatedPrice"
@@ -144,6 +149,7 @@ const CourseInformation: FC<Props> = ({
             <label htmlFor="name">Level</label>
             <input
               required
+              value={course.level}
               className={`!py-2 !px-4 text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white`}
               type="level"
               placeholder="Beginner/Intermediate/Advanced"
@@ -162,20 +168,20 @@ const CourseInformation: FC<Props> = ({
             </datalist>
           </div>
           <div className="flex-[1] flex flex-col">
-            <label htmlFor="name">Demo Url</label>
+            <label htmlFor="name">Demo Video id</label>
             <div
               className={` !px-4 text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white`}
             >
-              <span>/course/</span>
               <input
                 required
+                value={course.demoUrl}
                 className="!py-2 w-[80%] bg-slate-800 outline-none border-none text-white"
                 type="demoUrl"
                 placeholder="mern-fullstack"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setCourse({
                     ...course,
-                    level: e.target.value.toLowerCase(),
+                    demoUrl: e.target.value.toLowerCase(),
                   })
                 }
               />
@@ -225,7 +231,6 @@ const CourseInformation: FC<Props> = ({
               )}
             </div>
             <input
-              required
               onChange={handelChange}
               id="thumbnail"
               className="hidden"

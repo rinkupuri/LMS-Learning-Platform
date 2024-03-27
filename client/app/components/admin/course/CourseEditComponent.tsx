@@ -19,7 +19,7 @@ type videoContent = {
   videoSection: string;
   videolength: number;
   videoplayer: string;
-  link: Array<{ title: string; url: string }>;
+  links: Array<{ title: string; url: string }>;
 };
 
 interface Props {
@@ -34,6 +34,7 @@ interface Props {
   setPrerequisites: (prerequisites: Array<prerequisites>) => void;
   videoContent: Array<videoContent>;
   setVideoContent(videoContent: Array<videoContent>): void;
+  videoData: string;
 }
 
 const CourseEditComponent: FC<Props> = ({
@@ -48,6 +49,7 @@ const CourseEditComponent: FC<Props> = ({
   setPrerequisites,
   videoContent,
   setVideoContent,
+  videoData,
 }) => {
   const courseOptions = [
     "Course Information",
@@ -84,7 +86,15 @@ const CourseEditComponent: FC<Props> = ({
             editPage={editPage}
           />
         )}
-        {editPage === 3 && <CoursePreview />}
+        {editPage === 3 && (
+          <CoursePreview
+            course={course}
+            editPage={editPage}
+            setEditPage={setEditPage}
+            componentType={componentType}
+            videoData={videoData}
+          />
+        )}
       </div>
       <div className="flex-[2] relative w-full h-screen">
         <div className="flex items-center justify-center">
