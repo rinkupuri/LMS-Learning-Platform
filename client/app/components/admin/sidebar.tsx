@@ -1,13 +1,26 @@
 "use client";
-import Image from "next/image";
-import React, { FC } from "react";
-import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import React from "react";
 import { useSelector } from "react-redux";
-import avatar from "../../../public/user (1).png";
-import { SiCoursera } from "react-icons/si";
-import { IoCreate } from "react-icons/io5";
-import { BiEdit } from "react-icons/bi";
+import { BiUser } from "react-icons/bi";
 import Link from "next/link";
+import { AvatarFallback, AvatarImage, Avatar } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { HiMenuAlt3 } from "react-icons/hi";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { BookMarked, FilePlus2, LogOut, User, Users } from "lucide-react";
 
 type IUser = {
   name: string;
@@ -18,70 +31,81 @@ type IUser = {
   role: string;
 };
 
-type Props = {
-  drawer: boolean;
-  setDrawer: (drawer: boolean) => void;
-  drawerActive: number;
-  setDrawerActive: (drawerActive: number) => void;
-};
-
-const sidebar: FC<Props> = ({
-  drawer,
-  setDrawer,
-  drawerActive,
-  setDrawerActive,
-}) => {
+const sidebar = () => {
   const { user }: { user: IUser } = useSelector((state: any) => state.auth);
   return (
     <>
-      <div
-        onClick={() => setDrawer(!drawer)}
-        className="flex absolute top-0 bg-[#00000080] left-0 w-full h-screen"
-      >
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="flex relative w-[300px] z-[50000] flex-col bg-black opacity-100 h-full"
-        >
-          <div className="flex flex-col w-full h-fit  mt-5 justify-center items-center">
-            <Image
-              src={user?.avatar?.url ? user?.avatar?.url : avatar}
-              width={100}
-              height={100}
-              alt="logo"
-            />
-            <h1 className="text-white text-2xl font-bold">{user.name}</h1>
-          </div>
+      <Sheet>
+        <SheetTrigger>
+          <HiMenuAlt3 className="cursor-pointer" title="Menu" size={35} />
+        </SheetTrigger>
+        <SheetContent className="opacity-100 w-[350px] z-[9999]" side={"left"}>
+          <SheetHeader>
+            <SheetTitle>
+              <Card className="rounded-sm w-full flex items-center justify-between  p-2 mt-5">
+                <Avatar className="ml-5">
+                  <AvatarImage src={""} />
+                  <AvatarFallback>NM</AvatarFallback>
+                </Avatar>
+                <div className="flex ml-3 flex-col">
+                  <h1 className={`m-0 p-0`}>Noman</h1>
 
-          {/* create course Menu */}
-          <div
-            className={`flex mt-2 justify-center items-center h-[60px] w-full `}
-          >
+                  <Badge
+                    className={`m-0 p-2 rounded-sm h-[16px]  w-fit text-[10px] justify-center items-center font-[600]`}
+                  >
+                    Admin
+                  </Badge>
+                </div>
+                <Card className="rounded-sm">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <p className="text-[12px]  px-2">Menu</p>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="z-[9999999]">
+                      <DropdownMenuItem>
+                        <BiUser size={20} className="mx-1" />
+                        <Link passHref href="/admin/user">
+                          Profile
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <LogOut size={20} className="mx-1" />
+
+                        <Link passHref href="/admin/course">
+                          Log Out
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </Card>
+              </Card>
+            </SheetTitle>
+          </SheetHeader>
+          <Card className="rounded-sm px-2 py-3 flex flex-col mt-1">
             <Link
-              href={"/admin/editcourse"}
-              onClick={() => setDrawerActive(0)}
-              className={`flex items-center p-2 gap-2 cursor-pointer rounded-sm hover:bg-slate-900   h-full w-10/12 ${
-                drawerActive === 0 ? "bg-slate-900" : ""
-              }`}
+              href={"/admin/user"}
+              className="flex py-2 px-3 cursor-pointer mt-1 rounded-md hover:bg-gray-900 "
             >
-              <IoCreate size={20} /> Create Course
+              <Users size={20} className="mr-2" />
+              <Link href="/admin/user">Users</Link>
             </Link>
-          </div>
-          {/* edit Course menu */}
-          <div
-            className={`flex  mt-2 justify-center items-center h-[60px] w-full `}
-          >
             <Link
-              href={"/admin/editcourse"}
-              onClick={() => setDrawerActive(1)}
-              className={`flex items-center p-2 gap-2 cursor-pointer rounded-sm hover:bg-slate-900   h-full w-10/12 ${
-                drawerActive === 1 ? "bg-slate-900" : ""
-              }`}
+              href="/admin/course/new"
+              className="flex py-2 px-3 cursor-pointer mt-1 rounded-md hover:bg-gray-900 "
             >
-              <BiEdit size={20} /> Edit Course
+              <FilePlus2 size={20} className="mr-2" />
+              <Link href="/admin/course/new">New Courses</Link>
             </Link>
-          </div>
-        </div>
-      </div>
+            <Link
+              href="/admin/course"
+              className="flex py-2 px-3 cursor-pointer mt-1 rounded-md hover:bg-gray-900 "
+            >
+              <BookMarked size={20} className="mr-2" />
+              <Link href="/admin/course">Courses</Link>
+            </Link>
+          </Card>
+        </SheetContent>
+      </Sheet>
     </>
   );
 };

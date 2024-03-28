@@ -1,17 +1,28 @@
 import { style } from "@/app/styles/style";
+
 import React, { FC } from "react";
 import { BiUser } from "react-icons/bi";
 import { CiSettings } from "react-icons/ci";
-import { HiMenuAlt3 } from "react-icons/hi";
-import { IoNotifications } from "react-icons/io5";
 import { MdOutlineNotifications } from "react-icons/md";
+import SideBar from "../admin/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import { Check, LogOut, TicketCheck } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
-type Props = {
-  drawer: boolean;
-  setDrawer: (drawer: boolean) => void;
-};
-
-const AdminNavbar: FC<Props> = ({ drawer, setDrawer }) => {
+const AdminNavbar = () => {
   return (
     <div className="flex w-full h-[80px]">
       <div
@@ -19,25 +30,58 @@ const AdminNavbar: FC<Props> = ({ drawer, setDrawer }) => {
       >
         <div className="flex w-11/12 h-full justify-between  items-center">
           <div className="flex justify-center items-center gap-3">
-            <HiMenuAlt3
-              onClick={() => setDrawer(!drawer)}
-              className="cursor-pointer"
-              title="Menu"
-              size={35}
-            />
+            <SideBar />
             <h1 className={`${style.title}`}>Admin Dashboard</h1>
             <div className="flex h-[23px] justify-end items-end">
               <p className="text-[12px] font-Poppins text-slate-600">(V 1.0)</p>
             </div>
           </div>
           <div className="flex gap-4">
-            <BiUser className="cursor-pointer" title="User" size={20} />
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <BiUser className="cursor-pointer" title="User" size={20} />
+              </DropdownMenuTrigger>
+              <Card>
+                <DropdownMenuContent className="flex flex-col z-[9999999]">
+                  <DropdownMenuItem className="flex">
+                    <BiUser className="mx-1" size={20} />
+                    <Link href="/admin/user">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="flex">
+                    <LogOut className="mx-1" size={20} />
+                    <Link href="/admin/user">Log Out</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </Card>
+            </DropdownMenu>
+
             <CiSettings className="cursor-pointer" title="Settings" size={20} />
-            <MdOutlineNotifications
-              className="cursor-pointer"
-              title="Notifiaction"
-              size={20}
-            />
+            <Separator orientation="vertical" className="w-[2px] h-[20px]" />
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <MdOutlineNotifications
+                  className="cursor-pointer"
+                  title="Notifiaction"
+                  size={20}
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-[350px] p-0 m-0 !mr-8 flex justify-center items-center">
+                <Card className="w-full h-full border-none rounded-sm">
+                  <CardHeader>
+                    <CardTitle>Notifications</CardTitle>
+                    <CardDescription>
+                      You 3 unread notifications
+                    </CardDescription>
+                    <Separator className="w-full" />
+                    <Separator className="w-full" />
+                    <Button className="  mt-3 flex gap-1 justify-center items-center">
+                      <Check size={15} className="mt-1" />
+                      Mark all Read
+                    </Button>
+                  </CardHeader>
+                </Card>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>

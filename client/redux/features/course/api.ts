@@ -34,6 +34,16 @@ export const courseAPI = apiSlice.injectEndpoints({
         withCredentials: true,
       }),
     }),
+
+    // get All Course for admin
+    getAllCourseForAdmin: builder.query({
+      query: () => ({
+        url: "course/getAllAdmin",
+        method: "GET",
+        credentials: "include" as const,
+        withCredentials: true,
+      }),
+    }),
   }),
 });
 
@@ -41,4 +51,5 @@ export const {
   useCreateCourseMutation,
   useGetCourseQuery,
   useUpdateCourseMutation,
+  useGetAllCourseForAdminQuery,
 } = courseAPI;

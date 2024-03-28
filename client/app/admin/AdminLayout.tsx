@@ -10,12 +10,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="flex w-full flex-col h-[100vh] overflow-hidden">
         <div className="flex w-full flex-col ">
-          <AdminHeader
-            drawerActive={drawerActive}
-            setDrawerActive={setDrawerActive}
-            setDrawer={setDrawer}
-            drawer={drawer}
-          />
+          <AdminHeader />
         </div>
         {children}
       </div>
