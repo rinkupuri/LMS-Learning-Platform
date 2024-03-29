@@ -40,19 +40,32 @@ export const updateCourse = asyncErrorWrapper(async (req, res, next) => {
     const course = await Course.findById(req.params.id);
     if (!course) return next(new ErrorHandler("Course not found", 404));
     const data = req.body;
-    if (data.thumbnail) {
-      await cloudinary.v2.uploader.destroy(course.thumbnail.public_id);
-      const uploadThumbnail = await cloudinary.v2.uploader.upload(
-        data.thumbnail.url,
-        {
-          folder: "course",
-        }
-      );
-      data.thumbnail = {
-        public_id: uploadThumbnail.public_id,
-        url: uploadThumbnail.secure_url,
-      };
-    }
+    if (data.thumbnail.url.includes("data:image/"))
+      if (course.thumbnail?.public_id !== "") {
+        await cloudinary.v2.uploader.destroy(course.thumbnail.public_id);
+        const uploadThumbnail = await cloudinary.v2.uploader.upload(
+          data.thumbnail?.url,
+          {
+            folder: "course",
+          }
+        );
+        console.log(uploadThumbnail);
+        data.thumbnail = {
+          public_id: uploadThumbnail.public_id,
+          url: uploadThumbnail.secure_url,
+        };
+      } else {
+        const uploadThumbnail = await cloudinary.v2.uploader.upload(
+          data.thumbnail?.url,
+          {
+            folder: "course",
+          }
+        );
+        data.thumbnail = {
+          public_id: uploadThumbnail.public_id,
+          url: uploadThumbnail.secure_url,
+        };
+      }
     await Course.findByIdAndUpdate(req.params.id, data);
     await redis.del(req.params.id);
     await redis.set(req.params.id, JSON.stringify(data), "EX", 604800);
@@ -62,6 +75,7 @@ export const updateCourse = asyncErrorWrapper(async (req, res, next) => {
       message: "update course",
     });
   } catch (error) {
+    console.log(error);
     next(new ErrorHandler(error, 500));
   }
 });

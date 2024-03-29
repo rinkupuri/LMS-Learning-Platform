@@ -35,6 +35,15 @@
     --radius: 0.5rem;
   }
 
+  ::-webkit-scrollbar-thumb {
+    width: 0;
+    background-color: rgba(3, 5, 20, 0.523);
+  }
+  ::-webkit-scrollbar {
+    background-color: transparent;
+    width: 0;
+  }
+
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;

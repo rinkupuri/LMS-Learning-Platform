@@ -1,16 +1,19 @@
 "use client";
 
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import CoursePlayer from "../../course/CourseComponent/CoursePlayer";
 import { Course } from "@/app/interface/AllInterface";
 import { style } from "@/app/styles/style";
 import toast from "react-hot-toast";
 import {
+  courseAPI,
   useCreateCourseMutation,
+  useGetCourseQuery,
   useUpdateCourseMutation,
 } from "@/redux/features/course/api";
 import { redirect } from "next/navigation";
 import { isEqual } from "lodash";
+import { store } from "@/redux/Store";
 
 type Props = {
   course: Course;
@@ -43,7 +46,6 @@ const CoursePreview: FC<Props> = ({
   useEffect(() => {
     if (updateSuccess) {
       toast.success("Course Updated Successfully");
-      redirect(`/admin/course/edit/${course?._id}`);
     }
     if (updateIsError) {
       const err = updateError as any;
@@ -128,7 +130,9 @@ const CoursePreview: FC<Props> = ({
             {componentType === "edit" ? (
               <button
                 disabled={isEqual(JSON.parse(videoData), course)}
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
+
                   delete course.createdAt;
                   delete course.updatedAt;
                   delete course.__v;
@@ -136,9 +140,10 @@ const CoursePreview: FC<Props> = ({
                     delete data._id;
                     delete data.question;
                   });
-                  updateCourse(course)
-                    .then(() => toast.success("Course created successfully"))
-                    .catch(() => toast.error("Something went wrong"));
+                  updateCourse(course).then(async () => {
+                    updateSuccess &&
+                      toast.success("Course Updated successfully");
+                  });
                 }}
                 className="cursor-pointer disabled:cursor-not-allowed !py-2 !px-4 mt-4 justify-center items-center  flex hover:bg-black text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white"
               >
@@ -147,9 +152,10 @@ const CoursePreview: FC<Props> = ({
             ) : (
               <button
                 onClick={() => {
-                  createCourse(course)
-                    .then(() => toast.success("Course created successfully"))
-                    .catch(() => toast.error("Something went wrong"));
+                  createCourse(course).then(
+                    () =>
+                      isSuccess && toast.success("Course created successfully")
+                  );
                 }}
                 className="cursor-pointer !py-2 !px-4 mt-4 justify-center items-center  flex hover:bg-black text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white"
               >

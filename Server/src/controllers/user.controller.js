@@ -289,16 +289,16 @@ export const getAllUserAdmin = asyncErrorWrapper(async (req, res, next) => {
 // update user Role
 
 export const updateUserRole = asyncErrorWrapper(async (req, res, next) => {
-  const { id } = req.params;
-  const { role } = req.body;
-  const user = await User.findById(id);
+  const { role, email } = req.body;
+  const user = await User.findOne({ email });
   if (!user) return next(new ErrorHandler("User not found", 404));
   user.role = role;
   await user.save();
-  await redis.del(id);
-  await redis.set(id, JSON.stringify(user), "EX", 608400);
+  await redis.del(user._id);
+  await redis.set(user._id, JSON.stringify(user), "EX", 608400);
   res.status(200).json({
     success: true,
+    users: user,
     message: "User role updated successfully",
   });
 });
@@ -317,5 +317,15 @@ export const deleteUser = asyncErrorWrapper(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "User deleted successfully",
+  });
+});
+
+// get all admin roled users
+
+export const getAdminRoleUser = asyncErrorWrapper(async (req, res, next) => {
+  const users = await User.find({ role: "admin" });
+  res.status(200).json({
+    success: true,
+    users,
   });
 });

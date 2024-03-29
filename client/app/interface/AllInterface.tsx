@@ -108,14 +108,16 @@ export interface CourseId {
 
 // Interface for user document in MongoDB
 export interface UserDocument {
+  _id: string;
+  id: string;
   name: string;
   email: string;
   password: string;
   role: string;
-  avatar?: Avatar;
+  avatar: Avatar;
   isVerified: boolean;
   purchased: number;
   courses: CourseId[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt: string;
 }

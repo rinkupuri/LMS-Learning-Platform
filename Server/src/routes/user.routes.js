@@ -2,6 +2,7 @@ import express from "express";
 import {
   activationRoute,
   deleteUser,
+  getAdminRoleUser,
   getAllUserAdmin,
   getUser,
   loginUser,
@@ -35,7 +36,7 @@ router.get(
   getAllUserAdmin
 );
 router.put(
-  "/update-role/:id",
+  "/update-role",
   isAuthenticated,
   userSpecific("admin"),
   updateUserRole
@@ -45,6 +46,13 @@ router.delete(
   isAuthenticated,
   userSpecific("admin"),
   deleteUser
+);
+
+router.get(
+  "/getadmins",
+  isAuthenticated,
+  userSpecific("admin"),
+  getAdminRoleUser
 );
 
 export default router;

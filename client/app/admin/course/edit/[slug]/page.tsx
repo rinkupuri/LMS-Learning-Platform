@@ -12,6 +12,7 @@ type Props = {};
 
 const CourseEdit = ({ params }: { params: { slug: string } }) => {
   const [course, setCourse] = useState();
+  const { data, isSuccess, isLoading } = useGetCourseQuery(params.slug);
   useEffect(() => {
     store
       .dispatch(courseAPI.endpoints.getCourse.initiate(params.slug))
@@ -21,7 +22,7 @@ const CourseEdit = ({ params }: { params: { slug: string } }) => {
       .catch((err: any) => {
         toast.error(err.data.message);
       });
-  }, [params]);
+  }, [params, data, isLoading, isSuccess]);
   return (
     <AdminLayout>
       <CourseComponent componentType={"edit"} courseData={course} />
