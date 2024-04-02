@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 type Props = {};
 
@@ -45,7 +46,9 @@ const page = (props: Props) => {
   ] = useUpdateRoleMutation();
   const handelSubmit = () => {
     if (role && email) {
-      updateRole({ email, role });
+      updateRole({ email, role }).then(() => {
+        refetch();
+      });
     }
   };
   const { data, refetch, isLoading, isError, isSuccess } = useGetAllAdminQuery(
@@ -54,10 +57,6 @@ const page = (props: Props) => {
       refetchOnMountOrArgChange: true,
     }
   );
-
-  useEffect(() => {
-    refetch();
-  }, [roleLoading, roleError, roleSuccess]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -72,7 +71,7 @@ const page = (props: Props) => {
         })
       );
     }
-  }, [data, isLoading, isSuccess, isError]);
+  }, [data, isLoading, isSuccess]);
   return (
     <AdminLayout>
       <div className="flex flex-col gap-3 items-center mt-3">
@@ -122,9 +121,11 @@ const page = (props: Props) => {
                 </Label>
               </div>
               <div className="flex justify-center mt-1 w-full">
-                <Button onClick={handelSubmit} className="w-9/12">
-                  Update
-                </Button>
+                <DialogClose className="w-full h-full p-0 m-0">
+                  <Button onClick={handelSubmit} className="w-9/12">
+                    Update
+                  </Button>
+                </DialogClose>
               </div>
             </DialogContent>
           </Dialog>

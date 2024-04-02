@@ -15,7 +15,11 @@ export const layoutUpdate = asyncErrorWrapper(async (req, res, next) => {
       if (!layout) {
         await Layout.create({ banner: banner });
       }
-      const imageUploaded = await cloudinary.uploader.upload(
+      if (banner.image.url.includes("data:image/"))
+        if (layout.banner.image.public_id) {
+          await cloudinary.v2.uploader.destroy(layout.banner.image.public_id);
+        }
+      const imageUploaded = await cloudinary.v2.uploader.upload(
         banner[0].image.url,
         {
           folder: "layout",

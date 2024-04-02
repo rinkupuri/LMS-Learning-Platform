@@ -13,7 +13,6 @@ import {
 } from "@/redux/features/course/api";
 import { redirect } from "next/navigation";
 import { isEqual } from "lodash";
-import { store } from "@/redux/Store";
 
 type Props = {
   course: Course;
@@ -21,6 +20,9 @@ type Props = {
   componentType: string;
   setEditPage: (editPage: number) => void;
   videoData: string;
+  params: {
+    slug: string;
+  };
 };
 
 const CoursePreview: FC<Props> = ({
@@ -29,9 +31,13 @@ const CoursePreview: FC<Props> = ({
   setEditPage,
   editPage,
   videoData,
+  params,
 }) => {
   const [createCourse, { isLoading, isSuccess, data, error, isError }] =
     useCreateCourseMutation();
+  const { refetch } = useGetCourseQuery(course._id as any, {
+    refetchOnFocus: true,
+  });
   const [
     updateCourse,
     {
@@ -130,7 +136,7 @@ const CoursePreview: FC<Props> = ({
             {componentType === "edit" ? (
               <button
                 disabled={isEqual(JSON.parse(videoData), course)}
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
 
                   delete course.createdAt;
@@ -140,10 +146,9 @@ const CoursePreview: FC<Props> = ({
                     delete data._id;
                     delete data.question;
                   });
-                  updateCourse(course).then(async () => {
-                    updateSuccess &&
-                      toast.success("Course Updated successfully");
-                  });
+                  await updateCourse(course);
+                  await refetch();
+                  updateSuccess && toast.success("Course Updated successfully");
                 }}
                 className="cursor-pointer disabled:cursor-not-allowed !py-2 !px-4 mt-4 justify-center items-center  flex hover:bg-black text-black bg-slate-800 dark:text-white rounded-sm ring-1 ring-white"
               >

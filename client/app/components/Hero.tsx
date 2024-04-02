@@ -7,11 +7,11 @@ type Props = {};
 
 const Hero = (props: Props) => {
   return (
-    <div className="flex lg:w-[90%] w-full  xl:w-[80%] gap-10 md:pr-10  m-auto  h-full 800px:h-[88vh]">
-      <div className="flex w-full justify-center items-center 800px:flex-row flex-col  ">
+    <div className="flex lg:w-[90%] w-full  xl:w-[80%] gap-10 md:pr-10  m-auto  h-full md:h-[88vh]">
+      <div className="flex w-full justify-center items-center  flex-col md:flex-row  ">
         {/* banner image section */}
-        <div className="800px:flex-1 flex justify-center   items-center ">
-          <div className="flex relative 800px:w-[35vw] 800px:h-[35vw] md:w-[40vh] md:h-[40vh] w-[35vh] h-[35vh] mt-10 800px:mt-0 rounded-full p-10 hero_animation bg-blue-950">
+        <div className="md:flex-1 flex justify-center   items-center ">
+          <div className="flex relative  md:w-[70vh] md:h-[70vh] w-[35vh] h-[35vh] mt-10 md:mt-0 rounded-full p-10 hero_animation bg-blue-950">
             <Image
               src={require("../../public/banner-img-1.png")}
               alt="Banner Image for Learning  Platfrom"
@@ -21,7 +21,7 @@ const Hero = (props: Props) => {
         </div>
 
         {/* banner text section */}
-        <div className="800px:flex-1 w-full pt-15   ">
+        <div className="md:flex-1 w-full pt-15   ">
           <div className="flex  flex-col px-10 ">
             <div className="flex ">
               <p className="xl:text-[44px] lg:text-[40px] md:text-[35px] text-[30px] text-black dark:text-white p-0 m-0 font-[700] font-Poppins">
@@ -45,7 +45,7 @@ const Hero = (props: Props) => {
                 className="w-[10%] text-black dark:text-white bg-blue-600 h-full p-[6px]"
               />
             </div>
-            <div className="flex mt-6 gap-5 flex-row 800px:flex-row ">
+            <div className="flex mt-6 gap-5 flex-row md:flex-row ">
               <div className="flex relative h-[45px] w-[150px] ">
                 <img
                   width={50}
@@ -77,7 +77,7 @@ const Hero = (props: Props) => {
               </div>
 
               <div className="flex w-full items-center ">
-                <p className="h-full font-[700] text-black dark:text-white my-3 text-[14px]  800px:text-[16px]">
+                <p className="h-full font-[700] text-black dark:text-white my-3 text-[14px]  md:text-[16px]">
                   500k+ User join our courses.{" "}
                   <Link
                     href={"/courses"}
