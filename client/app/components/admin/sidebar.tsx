@@ -43,7 +43,7 @@ type IUser = {
   role: string;
 };
 
-const sidebar = () => {
+const Sidebar = () => {
   const { user }: { user: IUser } = useSelector((state: any) => state.auth);
   return (
     <>
@@ -193,4 +193,4 @@ const sidebar = () => {
   );
 };
 
-export default sidebar;
+export default Sidebar;

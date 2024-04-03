@@ -21,7 +21,7 @@ type Props = {
   updatedAt: string;
 };
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const [users, setUsers] = useState<Array<Props>>();
   const { data, isLoading, isError, isSuccess } = useGetAllUsersAdminQuery(
     undefined,
@@ -57,4 +57,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

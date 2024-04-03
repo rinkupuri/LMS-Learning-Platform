@@ -33,7 +33,7 @@ type Props = {
   subTitle: string;
 };
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const [bannerTitle, setBannerTitle] = useState("");
   const [bannerDescription, setBannerDescription] = useState<string>("");
   const [bannerImage, setBannerImage] = useState<string>("");
@@ -171,4 +171,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

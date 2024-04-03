@@ -97,7 +97,7 @@ const Login: FC<Props> = ({ setRoute }) => {
               }}
               className="flex cursor-pointer mt-3 ml-3"
             >
-              <p>Don't have Account? Create One</p>
+              <p>{"Don't have Account? Create One"}</p>
             </div>
             <div className="flex w-full justify-center  items-center mt-4">
               <hr className="w-[25%] 800px:w-[35%] " />

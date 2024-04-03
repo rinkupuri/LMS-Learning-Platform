@@ -55,7 +55,7 @@ const CourseOptions: FC<Props> = ({
           <h1>Tell User About benefits</h1>
         </div>
         {benefits.map((element, index) => (
-          <div className="flex gap-2 flex-col    w-11/12 mt-2">
+          <div key={index} className="flex gap-2 flex-col    w-11/12 mt-2">
             <div className="flex justify-start items-center flex-row w-full">
               <input
                 required
@@ -110,7 +110,7 @@ const CourseOptions: FC<Props> = ({
           <h1>Tell User About Prerequisites</h1>
         </div>
         {prerequisites.map((element, index) => (
-          <div className="flex gap-2 flex-col    w-11/12 mt-2">
+          <div key={index} className="flex gap-2 flex-col    w-11/12 mt-2">
             <div className="flex justify-start items-center flex-row w-full">
               <input
                 required

@@ -9,7 +9,7 @@ import CourseCard from "./CourseCard";
 
 type Props = {};
 
-const page = () => {
+const Page = () => {
   const [coursesData, setCoursesData] = useState<Array<Course>>();
   const { data, isLoading, isSuccess, isError } = useGetAllCourseForUserQuery(
     undefined,
@@ -38,4 +38,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

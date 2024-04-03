@@ -19,7 +19,7 @@ type Props = {
   row: User;
 };
 
-const removeUser: FC<Props> = ({ row }) => {
+const RemoveUser: FC<Props> = ({ row }) => {
   const { refetch } = useGetAllAdminQuery(
     {},
     {
@@ -55,4 +55,4 @@ const removeUser: FC<Props> = ({ row }) => {
   );
 };
 
-export default removeUser;
+export default RemoveUser;

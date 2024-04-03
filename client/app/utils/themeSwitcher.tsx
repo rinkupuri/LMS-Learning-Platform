@@ -6,7 +6,7 @@ import { BiMoon, BiSun } from "react-icons/bi";
 
 type Props = {};
 
-const themeSwitcher = (props: Props) => {
+const ThemeSwitcher = (props: Props) => {
   const [mount, setMount] = useState(false);
   const { theme, setTheme } = useTheme();
   useEffect(() => {
@@ -32,4 +32,4 @@ const themeSwitcher = (props: Props) => {
   );
 };
 
-export default themeSwitcher;
+export default ThemeSwitcher;

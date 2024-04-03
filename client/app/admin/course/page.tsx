@@ -9,7 +9,7 @@ import { Course } from "@/app/interface/AllInterface";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const [allCourseData, setAllCourseData] = useState<Array<Course>>();
   const { data, isLoading, isSuccess, refetch } = useGetAllCourseForAdminQuery(
     {},
@@ -35,4 +35,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;
