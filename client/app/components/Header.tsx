@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import Navbar from "../components/Navbar";
 import ThemeSwitcher from "../utils/themeSwitcher";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
