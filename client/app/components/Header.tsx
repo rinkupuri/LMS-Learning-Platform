@@ -13,8 +13,8 @@ import { useSelector } from "react-redux";
 import { useTheme } from "next-themes";
 
 type Props = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
   activeItem: number;
 };
 
@@ -43,7 +43,7 @@ const Header: FC<Props> = (props) => {
           <div className="flex  h-full justify-center items-center ">
             <ThemeSwitcher />
             {/* Only For Mobile  */}
-            <div className="800px:hidden">
+            <div className="md:hidden">
               <HiOutlineMenuAlt3
                 onClick={() => setOpenDrawer(!openDrawer)}
                 className="text-[30px] ml-5 text-black dark:text-white cursor-pointer"
@@ -55,13 +55,13 @@ const Header: FC<Props> = (props) => {
                   setOpen(true);
                   setRoute("Login");
                 }}
-                className="text-[30px] ml-5 800px:block hidden text-black dark:text-white cursor-pointer"
+                className="text-[30px] ml-5 md:block hidden text-black dark:text-white cursor-pointer"
               />
             ) : user?.avatar?.url ? (
               <Link href={"/profile"}>
                 <img
                   src={user.avatar.url}
-                  className="object-cover ml-5 rounded-full 800px:block hidden w-[45px] h-[45px]"
+                  className="object-cover ml-5 rounded-full md:block hidden w-[45px] h-[45px]"
                   alt="Profile Image"
                 />
               </Link>
@@ -71,7 +71,7 @@ const Header: FC<Props> = (props) => {
                   src={
                     "https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?t=st=1710358314~exp=1710361914~hmac=1326ed069883aac900b23adcf37a95cde14a3ce04dbb8a796c85a5f734c6ee7b"
                   }
-                  className="object-cover ml-5 800px:block hidden rounded-full w-[45px] h-[45px]"
+                  className="object-cover ml-5 md:block hidden rounded-full w-[45px] h-[45px]"
                   alt="Profile Image"
                 />
               </Link>
@@ -136,7 +136,7 @@ const Header: FC<Props> = (props) => {
                     setOpen(true);
                     setRoute("Login");
                   }}
-                  className="text-[30px] 800px:hidden block  text-black dark:text-white cursor-pointer"
+                  className="text-[30px] md:hidden block  text-black dark:text-white cursor-pointer"
                 />
               ) : user?.avatar?.url ? (
                 <Link href={"/profile"}>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import AdminLayout from "../AdminLayout";
-import Hero from "@/app/components/Hero";
+import Hero, { BannerTypes } from "@/app/components/Hero";
 import { BiPencil } from "react-icons/bi";
 import {
   Dialog,
@@ -21,14 +21,23 @@ import {
   useUpdateLayoutMutation,
 } from "@/redux/features/ui/api";
 import toast from "react-hot-toast";
-import { Edit2 } from "lucide-react";
+import { Edit2, Pencil } from "lucide-react";
+import Header from "@/app/utils/Header";
 
-type Props = {};
+type Props = {
+  image: {
+    url: string;
+    public_id?: string;
+  };
+  title: string;
+  subTitle: string;
+};
 
 const page = (props: Props) => {
   const [bannerTitle, setBannerTitle] = useState("");
   const [bannerDescription, setBannerDescription] = useState<string>("");
   const [bannerImage, setBannerImage] = useState<string>("");
+  const [bannerDumy, setBannerDumy] = useState<Props>();
   const { data, isLoading, isSuccess, isError, error } = useGetLayoutQuery(
     undefined,
     {
@@ -46,17 +55,24 @@ const page = (props: Props) => {
     },
   ] = useUpdateLayoutMutation();
   useEffect(() => {
+    setBannerDumy({
+      image: { url: bannerImage },
+      title: bannerTitle,
+      subTitle: bannerDescription,
+    });
+  }, [bannerTitle, bannerImage, bannerDescription]);
+  useEffect(() => {
     if (data?.layout?.banner) {
-      console.log(data);
       setBannerTitle(data?.layout?.banner.title);
-      setBannerDescription(data?.layout?.banner.subtitle);
-      setBannerImage(data?.layout?.banner.image);
+      setBannerDescription(data?.layout?.banner.subTitle);
+      setBannerImage(data?.layout?.banner.image?.url);
     }
   }, [data, isLoading]);
   return (
     <AdminLayout>
+      <Header title="Banner Set" />
       <div className="flex relative">
-        <Hero />
+        {bannerDumy && <Hero banner={bannerDumy} />}
         <Dialog>
           <DialogTrigger>
             <div className="absolute top-10 h-7 w-7 right-20 ring-1 flex justify-center items-center cursor-pointer ring-white rounded-full bg-[#00000024]">
@@ -85,10 +101,12 @@ const page = (props: Props) => {
                       reader.readAsDataURL(file);
                     }}
                     type="file"
-                    className="mt-2  rounded-sm w-full"
+                    className={`${
+                      bannerImage && "hidden"
+                    } mt-2  rounded-sm w-full`}
                   />
 
-                  <Edit2
+                  <Pencil
                     className={`absolute 
                   ${!bannerImage && "hidden"}
                   top-0 right-3`}
@@ -97,18 +115,18 @@ const page = (props: Props) => {
                     src={bannerImage}
                     className={`mt-2 h-[150px] ${
                       !bannerImage && "hidden"
-                    }  rounded-full object-cover w-[150px]`}
+                    }  rounded-full object-contain w-[150px]`}
                   />
                 </div>
               </Label>
-              <Label className="w-9/12 " htmlFor="email">
+              <Label className="w-9/12 " htmlFor="bannerTitle">
                 Title
                 <Input
                   value={bannerTitle}
-                  id="email"
+                  id="bannerTitle"
                   onChange={(e) => setBannerTitle(e.target.value)}
                   className="mt-2  rounded-sm w-full"
-                  placeholder="Enter email"
+                  placeholder="Enter Banner title"
                 />
               </Label>
               <Label className="w-9/12 " htmlFor="description">
@@ -116,13 +134,14 @@ const page = (props: Props) => {
                 <Input
                   value={bannerDescription}
                   id="description"
-                  onChange={(e) => setBannerTitle(e.target.value)}
+                  onChange={(e) => setBannerDescription(e.target.value)}
                   className="mt-2  rounded-sm w-full"
                   placeholder="Enter Description"
                 />
               </Label>
-              <DialogClose>
-                <Button
+              <div className="flex w-9/12 justify-center items-center">
+                <DialogClose>Preview</DialogClose>
+                <DialogClose
                   onClick={() => {
                     updateBanner({
                       type: "layout",
@@ -142,8 +161,8 @@ const page = (props: Props) => {
                   className="w-9/12"
                 >
                   Update Banner
-                </Button>
-              </DialogClose>
+                </DialogClose>
+              </div>
             </div>
           </DialogContent>
         </Dialog>

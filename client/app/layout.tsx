@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { store } from "@/redux/Store";
+import Header from "./utils/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({
         <Providers>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <Header />
               <Custom>{children}</Custom>
               <Toaster position="top-center" reverseOrder={false} />
             </ThemeProvider>

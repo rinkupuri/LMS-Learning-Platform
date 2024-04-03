@@ -1,11 +1,50 @@
+import { useGetLayoutQuery } from "@/redux/features/ui/api";
+import { cloneDeep } from "lodash";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { FC, useEffect, useState } from "react";
 import { CgSearch } from "react-icons/cg";
 
-type Props = {};
+export type BannerTypes = {
+  banner?: {
+    image: {
+      url: string;
+      public_id?: string;
+    };
+    title: string;
+    subTitle: string;
+  };
+};
 
-const Hero = (props: Props) => {
+const Hero: FC<BannerTypes> = ({ banner: bannerDumy }) => {
+  const { data, isLoading, isSuccess, refetch } = useGetLayoutQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const [bannerData, setBannerData] = useState<BannerTypes>({
+    banner: {
+      image: {
+        url: "",
+        public_id: "",
+      },
+      title: "",
+      subTitle: "",
+    },
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      const banner: BannerTypes = cloneDeep(data?.layout);
+      setBannerData(banner);
+    }
+  }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    if (bannerDumy) {
+      setBannerData((prevState) => ({ ...prevState, banner: bannerDumy }));
+    }
+  }, [bannerDumy]);
+
   return (
     <div className="flex lg:w-[90%] w-full  xl:w-[80%] gap-10 md:pr-10  m-auto  h-full md:h-[88vh]">
       <div className="flex w-full justify-center items-center  flex-col md:flex-row  ">
@@ -13,7 +52,12 @@ const Hero = (props: Props) => {
         <div className="md:flex-1 flex justify-center   items-center ">
           <div className="flex relative  md:w-[70vh] md:h-[70vh] w-[35vh] h-[35vh] mt-10 md:mt-0 rounded-full p-10 hero_animation bg-blue-950">
             <Image
-              src={require("../../public/banner-img-1.png")}
+              width={3800}
+              height={3800}
+              src={
+                bannerData?.banner?.image?.url ||
+                require("../../public/banner-img-1.png")
+              }
               alt="Banner Image for Learning  Platfrom"
               className="object-contain w-full h-full absolute p-4 top-0 left-0 right-0"
             />
@@ -25,13 +69,12 @@ const Hero = (props: Props) => {
           <div className="flex  flex-col px-10 ">
             <div className="flex ">
               <p className="xl:text-[44px] lg:text-[40px] md:text-[35px] text-[30px] text-black dark:text-white p-0 m-0 font-[700] font-Poppins">
-                Improve Your Online Learning Experince Better instantly
+                {bannerData?.banner?.title}
               </p>
             </div>
             <div className="flex">
               <p className="text-[13px] md:text-[15px] lg:text-[16px] xl:text-[18px]  font-[600] text-black dark:text-white font-Josefin">
-                We have 40k+ Online course & 500k+ registered students. Find
-                your desire course from them
+                {bannerData?.banner?.subTitle}
               </p>
             </div>
             <div className="flex min-w-full dark:border-[#000000] border-[1px] h-[40px] rounded-sm overflow-hidden flex-row justify-center items-center text-[16px] font-[600] w-11/12 mt-5 ">

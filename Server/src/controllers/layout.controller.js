@@ -13,35 +13,62 @@ export const layoutUpdate = asyncErrorWrapper(async (req, res, next) => {
       }
       const layout = await Layout.findOne({});
       if (!layout) {
-        await Layout.create({ banner: banner });
+        await Layout.create({
+          banner: {
+            title: banner.title,
+            subTitle: banner.subTitle,
+          },
+        });
       }
-      if (banner.image.url.includes("data:image/"))
-        if (layout.banner.image.public_id) {
+      if (banner.image.url.includes("data:image/")) {
+        if (layout?.banner?.image?.public_id) {
           await cloudinary.v2.uploader.destroy(layout.banner.image.public_id);
         }
-      const imageUploaded = await cloudinary.v2.uploader.upload(
-        banner[0].image.url,
-        {
-          folder: "layout",
-        }
-      );
-      const public_id = imageUploaded.public_id;
-      const imageUrl = imageUploaded.secure_url;
-      const layoutObj = {
-        banner: {
-          image: {
-            public_id,
-            url: imageUrl,
+        const imageUploaded = await cloudinary.v2.uploader.upload(
+          banner.image.url,
+          {
+            folder: "layout",
+          }
+        );
+
+        const public_id = imageUploaded.public_id;
+        const imageUrl = imageUploaded.secure_url;
+        const layoutObj = {
+          banner: {
+            image: {
+              public_id,
+              url: imageUrl,
+            },
+            title: banner.title,
+            subTitle: banner.subTitle,
           },
-          title: req.body.title,
-          subTitle: req.body.subTitle,
-        },
-      };
-      await Layout.updateOne({}, layoutObj);
-      res.status(200).json({
-        success: true,
-        layout,
-      });
+        };
+        console.log(layoutObj);
+        if (!layout) {
+          await Layout.create({ banner: layoutObj.banner });
+        }
+        const returnLayout = await Layout.findOneAndUpdate({}, layoutObj, {
+          new: true,
+        });
+        res.status(200).json({
+          success: true,
+          layout: returnLayout,
+        });
+      } else {
+        const layoutObj = {
+          banner: {
+            title: banner.title,
+            subTitle: banner.subTitle,
+          },
+        };
+        const returnLayout = await Layout.findOneAndUpdate({}, layoutObj, {
+          new: true,
+        });
+        res.status(200).json({
+          success: true,
+          layout: returnLayout,
+        });
+      }
     }
 
     if (type === "faq") {
