@@ -1,0 +1,4 @@
+services:
+  - name: your-nodejs-service
+    type: web
+    buildCommand: pnpm install --production
