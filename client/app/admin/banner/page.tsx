@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import AdminLayout from "../AdminLayout";
-import Hero, { BannerTypes } from "@/app/components/Hero";
+import Hero from "@/app/components/Hero";
 import { BiPencil } from "react-icons/bi";
 import {
   Dialog,
@@ -15,13 +15,12 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   useGetLayoutQuery,
   useUpdateLayoutMutation,
 } from "@/redux/features/ui/api";
 import toast from "react-hot-toast";
-import { Edit2, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import Header from "@/app/utils/Header";
 
 type Props = {
@@ -33,7 +32,7 @@ type Props = {
   subTitle: string;
 };
 
-const Page = (props: Props) => {
+const Page = () => {
   const [bannerTitle, setBannerTitle] = useState("");
   const [bannerDescription, setBannerDescription] = useState<string>("");
   const [bannerImage, setBannerImage] = useState<string>("");
