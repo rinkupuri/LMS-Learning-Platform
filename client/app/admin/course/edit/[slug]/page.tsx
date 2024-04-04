@@ -8,8 +8,6 @@ import { apiSlice } from "@/redux/features/api/apislicer";
 import CourseComponent from "@/app/admin/CourseComponent";
 import toast from "react-hot-toast";
 
-type Props = {};
-
 const CourseEdit = ({ params }: { params: { slug: string } }) => {
   const [course, setCourse] = useState();
   const { data, isSuccess, isLoading } = useGetCourseQuery(params.slug);

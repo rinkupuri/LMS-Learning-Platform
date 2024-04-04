@@ -5,8 +5,7 @@ import Head from "./utils/Header";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import { useSelector } from "react-redux";
-interface props {}
-const Page: FC<props> = (props) => {
+const Page = () => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
   return (

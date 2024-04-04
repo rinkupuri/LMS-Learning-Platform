@@ -31,7 +31,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 
 type Props = {};
 
-const Page = (props: Props) => {
+const Page = () => {
   const [users, setUsers] = useState<Array<UserDocument>>();
   const [role, setRole] = useState<string>("user");
   const [email, setEmail] = useState<string>("");

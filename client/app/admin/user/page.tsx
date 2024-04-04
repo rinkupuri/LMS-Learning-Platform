@@ -21,7 +21,7 @@ type Props = {
   updatedAt: string;
 };
 
-const Page = (props: Props) => {
+const Page = () => {
   const [users, setUsers] = useState<Array<Props>>();
   const { data, isLoading, isError, isSuccess } = useGetAllUsersAdminQuery(
     undefined,

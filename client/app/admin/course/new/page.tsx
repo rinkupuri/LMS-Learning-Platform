@@ -6,7 +6,7 @@ import CourseComponent from "../../CourseComponent";
 
 type Props = {};
 
-const page = (props: Props) => {
+const page = () => {
   return (
     <>
       <AdminLayout>
