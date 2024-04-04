@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "buid": "npm install"
+    "build": "pnpm install"
   },
   "keywords": [],
   "author": "",
