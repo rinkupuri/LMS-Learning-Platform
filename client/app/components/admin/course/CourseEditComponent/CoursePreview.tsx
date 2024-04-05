@@ -20,9 +20,6 @@ type Props = {
   componentType: string;
   setEditPage: (editPage: number) => void;
   videoData: string;
-  params: {
-    slug: string;
-  };
 };
 
 const CoursePreview: FC<Props> = ({
@@ -31,7 +28,6 @@ const CoursePreview: FC<Props> = ({
   setEditPage,
   editPage,
   videoData,
-  params,
 }) => {
   const [createCourse, { isLoading, isSuccess, data, error, isError }] =
     useCreateCourseMutation();
