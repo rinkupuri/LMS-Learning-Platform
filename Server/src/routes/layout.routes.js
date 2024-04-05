@@ -5,6 +5,6 @@ import { userSpecific } from "../middleware/userSpecific.js";
 const router = express.Router();
 
 router.post("/update", isAuthenticated, userSpecific("admin"), layoutUpdate);
-router.get("/get", isAuthenticated, userSpecific("admin"), getLayout);
+router.get("/get", getLayout);
 
 export default router;

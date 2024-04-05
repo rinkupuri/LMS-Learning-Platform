@@ -1,6 +1,13 @@
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { style } from "../../styles/style";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, {
+  FC,
+  LegacyRef,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useActivationMutation } from "@/redux/features/auth/api";
 import { useSelector } from "react-redux";
@@ -52,11 +59,11 @@ const VerifyOTP: FC<Props> = ({ setRoute }) => {
     2: "",
     3: "",
   });
-  const inputRefs = [
-    useRef<HTMLInputElement>(),
-    useRef<HTMLInputElement>(),
-    useRef<HTMLInputElement>(),
-    useRef<HTMLInputElement>(),
+  const inputRefs: RefObject<HTMLInputElement>[] = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
   ];
 
   // button otp verify handel
