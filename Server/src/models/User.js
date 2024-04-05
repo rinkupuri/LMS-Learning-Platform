@@ -1,4 +1,4 @@
-import mongoose from "Mongoose";
+import mongoose from "mongoose";
 import bycrpt from "bcryptjs";
 import jwt from "jsonwebtoken";
 

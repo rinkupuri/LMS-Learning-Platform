@@ -26,15 +26,17 @@ export const sendToken = async (user, statusCode, res) => {
 
   const accessTokenOptions = {
     httpOnly: true,
+    secure: true,
     maxAge: accessTokenExpire * 60 * 60 * 1000,
     expires: new Date(Date.now() + accessTokenExpire * 60 * 60 * 1000),
-    sameSite: "lax",
+    sameSite: "none",
   };
   const refreshTokenOptions = {
     httpOnly: true,
+    secure: true,
     maxAge: refreshTokenExpire * 24 * 60 * 60 * 1000,
     expires: new Date(Date.now() + refreshTokenExpire * 24 * 60 * 60 * 1000),
-    sameSite: "lax",
+    sameSite: "none",
   };
 
   if (process.env.NODE_ENV === "production") {
