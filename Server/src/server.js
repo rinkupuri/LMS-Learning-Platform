@@ -24,10 +24,7 @@ app.use(morgan("tiny"));
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://lms-learning-platform-sage.vercel.app",
-    ],
+    origin: ["http://localhost:3000", "https://lmspanel.vercel.app"],
     credentials: true,
   })
 );
