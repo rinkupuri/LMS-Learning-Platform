@@ -141,8 +141,14 @@ export const updateUserToken = asyncErrorWrapper(async (req, res, next) => {
       expiresIn: "3d",
     }
   );
-  res.cookie("access_token", newAccessToken);
-  res.cookie("refresh_token", newRefreshToken);
+  res.cookie("access_token", newAccessToken, {
+    sameSite: "none",
+    secure: true,
+  });
+  res.cookie("refresh_token", newRefreshToken, {
+    sameSite: "none",
+    secure: true,
+  });
   res.status(200).json({
     success: true,
     message: "Token updated successfully",

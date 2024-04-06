@@ -27,7 +27,7 @@ const Page = () => {
       <div className="flex flex-col  h-screen">
         <Header activeItem={1} />
         <div className="flex justify-center items-center">
-          <div className="grid w-11/12 my-5 sm:grid-cols-4 md:grid-cols-6 gap-5">
+          <div className="grid w-11/12 my-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6  gap-5">
             {coursesData?.map((course, index) => (
               <CourseCard key={index} coursesData={course} />
             ))}
