@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { userLogOut, userLoggedIn } from "../auth/authSlice";
 
+console.log(process.env.NEXT_PUBLIC_SERVER_URL);
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
